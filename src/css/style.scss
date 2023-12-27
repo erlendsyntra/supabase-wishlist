@@ -1,0 +1,50 @@
+@use "./base/reset";
+@use "./base/variables" as *;
+@use "./base/fonts";
+@use "./base/mixins" as *;
+
+/* style to color p icon red */
+// p {
+//   color: red;
+// }
+
+/* style to implement icon within div via after */
+// div::after {
+//   content: "";
+//   left: 0;
+//   top: 0;
+//   display: block;
+//   @include icon("icon-checked", $green, 2rem);
+// }
+
+#root {
+  padding: 10rem;
+  font-family: roboto;
+  font-size: 2rem;
+  & nav {
+    display: flex;
+    justify-content: end;
+  }
+  & h1 {
+    font-size: 4rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-right: auto;
+  }
+  & input {
+    margin: 20px 0;
+  }
+
+  & ul {
+    & li {
+      list-style: disc;
+      margin-bottom: 7px;
+    }
+    & .bought {
+      text-decoration: line-through;
+    }
+  }
+  & button {
+    margin-left: 10px;
+  }
+}
