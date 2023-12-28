@@ -60,9 +60,7 @@ const Home = () => {
         <h1>Your Wishlist</h1>
         <button onClick={signOut}>Sign Out</button>
       </nav>
-      <p>
-        Hi NAME, you currently have {wishList.length} item(s) in your wishlist
-      </p>
+      <p>You currently have {wishList.length} item(s) in your wishlist</p>
       <form action="" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -77,16 +75,18 @@ const Home = () => {
           {wishList.map(({ id, wish, bought }) => (
             <li key={id} className={bought ? "bought" : ""}>
               {wish}
-              <button onClick={() => toggleClass(id, !bought)}>
-                {bought ? "Wanted" : "Bought"}
-              </button>
-              <button
+              <a
+                href="#"
+                className={`ico ico--${bought ? "check" : "uncheck"}`}
+                onClick={() => toggleClass(id, !bought)}
+              ></a>
+              <a
+                href="#"
+                className="ico ico--delete"
                 onClick={() => {
                   deleteWish(id);
                 }}
-              >
-                Remove
-              </button>
+              ></a>
             </li>
           ))}
         </ul>

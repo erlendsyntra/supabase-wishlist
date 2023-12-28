@@ -10,7 +10,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --open --host",
     "predeploy": "npm run build",
-    "deploy": "surge ./dist ORIGINAL_NAME.surge.sh"
+    "deploy": "surge ./dist supabase-wishlist-erlend.surge.sh"
   },
   "dependencies": {
     "@supabase/auth-ui-react": "^0.4.6",
