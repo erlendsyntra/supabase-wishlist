@@ -56,10 +56,6 @@ const Home = () => {
 
   return (
     <div>
-      <nav>
-        <h1>Your Wishlist</h1>
-        <button onClick={signOut}>Sign Out</button>
-      </nav>
       <p>You currently have {wishList.length} item(s) in your wishlist</p>
       <form action="" onSubmit={handleSubmit}>
         <input
