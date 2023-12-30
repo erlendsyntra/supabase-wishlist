@@ -56,36 +56,46 @@ const Home = () => {
 
   return (
     <div>
-      <p>You currently have {wishList.length} item(s) in your wishlist</p>
-      <form action="" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={wish}
-          onChange={(e) => setWish(e.target.value)}
-        />
-        <button>Add Wish</button>
-      </form>
-      {wishList.length > 0 && (
-        <ul>
-          {" "}
-          {wishList.map(({ id, wish, bought }) => (
-            <li key={id} className={bought ? "bought" : ""}>
-              {wish}
-              <a
-                href="#"
-                className={`ico ico--${bought ? "check" : "uncheck"}`}
-                onClick={() => toggleClass(id, !bought)}
-              ></a>
-              <a
-                href="#"
-                className="ico ico--delete"
-                onClick={() => {
-                  deleteWish(id);
-                }}
-              ></a>
-            </li>
-          ))}
-        </ul>
+      {user.email && (
+        <>
+          <p>
+            {`You ( ${user.email.substring(
+              0,
+              user.email.indexOf("@")
+            )} ) currently
+            have ${wishList.length} item(s) in your wishlist`}
+          </p>
+          <form action="" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={wish}
+              onChange={(e) => setWish(e.target.value)}
+            />
+            <button>Add Wish</button>
+          </form>
+          {wishList.length > 0 && (
+            <ul>
+              {" "}
+              {wishList.map(({ id, wish, bought }) => (
+                <li key={id} className={bought ? "bought" : ""}>
+                  {wish}
+                  <a
+                    href="#"
+                    className={`ico ico--${bought ? "check" : "uncheck"}`}
+                    onClick={() => toggleClass(id, !bought)}
+                  ></a>
+                  <a
+                    href="#"
+                    className="ico ico--delete"
+                    onClick={() => {
+                      deleteWish(id);
+                    }}
+                  ></a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </div>
   );

@@ -4,9 +4,8 @@ const Header = () => {
   // const lamp = lamp
   return (
     <header>
-      <div classname="logo">
-        <img src={lamp} alt="oil lamp" />
-        <h1>Your Wishlist</h1>
+      <div className="logo">
+        <img src={lamp} alt="oil lamp" />. <h1>Your Wishlist</h1>
       </div>
       <nav>
         <a href="#">Sign Out</a>
