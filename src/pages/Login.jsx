@@ -1,15 +1,12 @@
 import { Auth } from "@supabase/auth-ui-react";
-import { createClient } from "@supabase/supabase-js";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { supabaseContext } from "../data/SupabaseProvider";
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
 const Login = () => {
   const navigate = useNavigate();
+  const supabase = useContext(supabaseContext);
 
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (e) => {

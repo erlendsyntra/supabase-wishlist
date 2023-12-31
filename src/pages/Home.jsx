@@ -1,58 +1,48 @@
-import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
+import WishList from "../components/WishList";
+import AddWishForm from "../components/AddWishForm";
+import { supabaseContext } from "../data/SupabaseProvider";
+import {
+  deleteWish,
+  getWishes,
+  insertWish,
+  updateWish,
+} from "../functions/queries";
+import { useAuth } from "../hooks";
 
 const Home = () => {
+  const supabase = useContext(supabaseContext);
   const [wishList, setWishList] = useState([]);
-  const [wish, setWish] = useState("");
-  const [user, setUser] = useState({});
+  const [user, signOut] = useAuth(supabase);
   const navigate = useNavigate();
 
-  const getWishes = async () => {
-    const { data } = await supabase
-      .from("wishlist")
-      .select()
-      .order("created_at", { ascending: false });
+  const handleGetWishes = async () => {
+    const data = await getWishes(supabase);
+    console.log("data: ", data);
     setWishList(data);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await supabase.from("wishlist").insert({ wish, user_id: user.id });
-    setWish("");
-    getWishes();
+  const handleInsertWish = async (wish) => {
+    await insertWish(supabase, wish, user.id);
+    handleGetWishes();
   };
 
-  const deleteWish = async (id) => {
-    await supabase.from("wishlist").delete().eq("id", id);
-    getWishes();
+  const handleUpdateWish = async (id, bought) => {
+    await updateWish(supabase, id, bought);
+    handleGetWishes();
   };
 
-  const toggleClass = async (id, bought) => {
-    await supabase.from("wishlist").update({ bought }).eq("id", id);
-    getWishes();
+  const handleDeleteWish = async (id) => {
+    await deleteWish(supabase, id);
+    handleGetWishes();
   };
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    navigate("/");
-  };
-  useEffect(() => {
-    (async () => {
-      const { data } = await supabase.auth.getUser();
-      console.log("user data: ", data);
-      data.user ? setUser(data.user) : navigate("/");
-    })();
-  }, []);
 
   useEffect(() => {
-    getWishes();
-  }, []);
+    if (user.id) {
+      handleGetWishes();
+    }
+  }, [user]);
 
   return (
     <div>
@@ -65,36 +55,12 @@ const Home = () => {
             )} ) currently
             have ${wishList.length} item(s) in your wishlist`}
           </p>
-          <form action="" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              value={wish}
-              onChange={(e) => setWish(e.target.value)}
-            />
-            <button>Add Wish</button>
-          </form>
-          {wishList.length > 0 && (
-            <ul>
-              {" "}
-              {wishList.map(({ id, wish, bought }) => (
-                <li key={id} className={bought ? "bought" : ""}>
-                  {wish}
-                  <a
-                    href="#"
-                    className={`ico ico--${bought ? "check" : "uncheck"}`}
-                    onClick={() => toggleClass(id, !bought)}
-                  ></a>
-                  <a
-                    href="#"
-                    className="ico ico--delete"
-                    onClick={() => {
-                      deleteWish(id);
-                    }}
-                  ></a>
-                </li>
-              ))}
-            </ul>
-          )}
+          <AddWishForm handleInsertWish={handleInsertWish} />
+          <WishList
+            wishList={wishList}
+            handleDeleteWish={handleDeleteWish}
+            handleUpdateWish={handleUpdateWish}
+          />
         </>
       )}
     </div>
